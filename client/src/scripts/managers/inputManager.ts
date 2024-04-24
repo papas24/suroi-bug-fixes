@@ -432,10 +432,32 @@ export class InputManager {
     private getKeyFromInputEvent(event: KeyboardEvent | MouseEvent | WheelEvent): string {
         let key = "";
         if (event instanceof KeyboardEvent) {
-            key = event.key.length > 1 ? event.key : event.key.toUpperCase();
-            if (key === " ") {
-                key = "Space";
+             // ---------------------------------------------------------------------------------------
+            // BUG FIX: key.event not being constant (for letters), resulting in key inputs not being
+            // read properly if the player's keyboard language is not set to ENG (English)
+            // ---------------------------------------------------------------------------------------
+            let keyPressed = event.code;
+
+            // If it's a letter, use it's code and not it's value.
+            if (keyPressed.includes('Key')) {
+
+                // Make sure it's only the key character.
+                keyPressed = event.code.replace('Key', '');
             }
+
+            // Otherwise, use the key's value since it's not affected by keyboard language.
+            else {
+                keyPressed = event.key;
+            }
+
+            key = keyPressed.length > 1 ? keyPressed : keyPressed.toUpperCase();
+
+            if (key == ' ') {
+                key = 'Space';
+            }
+
+            //console.log(key); // debug
+            // ---------------------------------------------------------------------------------------
         }
 
         if (event instanceof WheelEvent) {
