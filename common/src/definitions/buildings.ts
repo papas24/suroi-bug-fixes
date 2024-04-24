@@ -265,6 +265,17 @@ export const Buildings = ObjectDefinitions.create<BuildingDefinition>()(
             ]
         },
         {
+            // Pumpkin with light (has normal loot like a crate)
+            idString: "light_pumpkin",
+            name: "Pumpkin",
+            spawnHitbox: RectangleHitbox.fromRect(60, 60),
+            scopeHitbox: RectangleHitbox.fromRect(0, 0),
+            obstacles: [
+                { idString: "halloween_light", position: Vec.create(0, 0) },
+                { idString: "dark_pumpkin", position: Vec.create(0, 0) }
+            ]
+        },
+        {
             // Junky-Yard
             idString: "junk_yard",
             name: "Junk Yard",
@@ -313,10 +324,10 @@ export const Buildings = ObjectDefinitions.create<BuildingDefinition>()(
                 { idString: "regular_crate", position: Vec.create(75, -50) },
 
                 // Around the big dead tree
-                { idString: "pumpkin", position: Vec.create(30, 0) },
-                { idString: "pumpkin", position: Vec.create(-30, 0) },
-                { idString: "pumpkin", position: Vec.create(0, 30) },
-                { idString: "pumpkin", position: Vec.create(0, -30) },
+                { idString: "halloween_light", position: Vec.create(30, 0) },
+                { idString: "halloween_light", position: Vec.create(-30, 0) },
+                { idString: "halloween_light", position: Vec.create(0, 30) },
+                { idString: "halloween_light", position: Vec.create(0, -30) },
             ],
 
             lootSpawners: [
@@ -364,8 +375,10 @@ export const Buildings = ObjectDefinitions.create<BuildingDefinition>()(
                 // -----------------------------------------------------------------------
                 // For Halloween: Additional pumpkins in doors.
                 // -----------------------------------------------------------------------
-                { idString: "pumpkin", position: Vec.create(-45, 33) },
-                { idString: "pumpkin", position: Vec.create(-26.5, 33) },
+                { idString: "dark_pumpkin", position: Vec.create(-45, 33) },
+                { idString: "dark_pumpkin", position: Vec.create(-26.5, 33) },
+                { idString: "halloween_light", position: Vec.create(-45, 33) },
+                { idString: "halloween_light", position: Vec.create(-26.5, 33) },
 
                 // Exterior
                 { idString: "pumpkin", position: Vec.create(37.5, 15) },
@@ -441,6 +454,14 @@ export const Buildings = ObjectDefinitions.create<BuildingDefinition>()(
 
                 { idString: "ammo_crate", position: Vec.create(-14, 0) },
                 { idString: "ammo_crate", position: Vec.create(14, 0) },
+
+                // --------------------------------------------------------------------------
+                // For Halloween, spooky lights
+                // --------------------------------------------------------------------------
+                { idString: "halloween_light", position: Vec.create(0, -30) },
+                { idString: "halloween_light", position: Vec.create(0, 30) },
+                { idString: "halloween_light", position: Vec.create(0, 0) },
+                // --------------------------------------------------------------------------
 
                 { idString: { box: 9, grenade_box: 1 }, get position() { return randomVector(-16.6, -11.25, -14.93, -8.03); } },
                 { idString: { box: 9, grenade_box: 1 }, get position() { return randomVector(-16.6, -11.25, 14.93, 8.03); } },
@@ -987,11 +1008,15 @@ export const Buildings = ObjectDefinitions.create<BuildingDefinition>()(
                 // -----------------------------------------------------------------------
                 // For Halloween: Additional pumpkins in doors.
                 // -----------------------------------------------------------------------
-                { idString: "pumpkin", position: Vec.create(-23.5, 34) },
-                { idString: "pumpkin", position: Vec.create(-5, 34) },
+                { idString: "dark_pumpkin", position: Vec.create(-23.5, 34) },
+                { idString: "dark_pumpkin", position: Vec.create(-5, 34) },
+                { idString: "halloween_light", position: Vec.create(-23.5, 34) },
+                { idString: "halloween_light", position: Vec.create(-5, 34) },
 
-                { idString: "pumpkin", position: Vec.create(25, -34) },
-                { idString: "pumpkin", position: Vec.create(7.5, -34) },
+                { idString: "dark_pumpkin", position: Vec.create(25, -34) },
+                { idString: "dark_pumpkin", position: Vec.create(7.5, -34) },
+                { idString: "halloween_light", position: Vec.create(25, -34) },
+                { idString: "halloween_light", position: Vec.create(7.5, -34) },
                 // -----------------------------------------------------------------------
 
                 // Bathroom Left
