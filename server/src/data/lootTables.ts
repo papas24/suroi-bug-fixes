@@ -173,8 +173,9 @@ export const LootTables: Record<string, LootTable> = {
         min: 1,
         max: 1,
         loot: [
-            { item: "s_g17", weight: 0.95 },
-            { item: "usas12", weight: 0.05 }
+           { item: "s_g17", weight: 0.95 },
+           { item: "usas12", weight: 0.05 },
+           { tier: "disguises", weight: 0.94 }
         ]
     },
     blueberry_bush: {
@@ -492,6 +493,15 @@ export const LootTables: Record<string, LootTable> = {
 };
 
 export const LootTiers: Record<string, WeightedItem[]> = {
+    disguises: [
+        { item: "fish_in_a_barrel", weight: 0.8 },
+        { item: "guy_in_a_box", weight: 0.85 },
+        { item: "nato_employee", weight: 0.6 },
+        { item: "flint_stones", weight: 0.09 },
+        { item: "barkskin", weight: 0.7 },
+        { item: "rock_solid", weight: 0.7 },
+        { item: "smelly", weight: 0.67 }
+    ],
     guns: [
         { item: "g19", weight: 2 },
         { item: "m1895", weight: 1.75 },
