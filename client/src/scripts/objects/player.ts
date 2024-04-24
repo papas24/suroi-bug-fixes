@@ -49,6 +49,13 @@ export class Player extends GameObject<ObjectCategory.Player> {
         return this.id === this.game.activePlayerID;
     }
 
+    // -----------------------------
+    // Halloween Disguises
+    // -----------------------------
+    isWearingDisguise?: boolean
+    disguiseMaterial?: string
+    // -----------------------------
+
     footstepSound?: GameSound;
     actionSound?: GameSound;
 
@@ -123,6 +130,9 @@ export class Player extends GameObject<ObjectCategory.Player> {
 
     constructor(game: Game, id: number, data: Required<ObjectsNetData[ObjectCategory.Player]>) {
         super(game, id);
+
+        this.isWearingDisguise = false;
+        this.disguiseMaterial = undefined;
 
         this.images = {
             aimTrail: new TilingSprite({ texture: SuroiSprite.getTexture("aimTrail"), width: 20, height: 6000 }),
@@ -517,7 +527,7 @@ export class Player extends GameObject<ObjectCategory.Player> {
             const skinID = full.skin.idString;
             if (this.isActivePlayer) {
 
-                 // -------------------------------------------------------------------------------------------
+                // -------------------------------------------------------------------------------------------
                 // Halloween Disguises: Play additional obstacle destroy sound.
                 // -------------------------------------------------------------------------------------------
                 if (this.dead && Loots.fromString<SkinDefinition>(skinID).isDisguise) {
@@ -526,7 +536,10 @@ export class Player extends GameObject<ObjectCategory.Player> {
                         maxRange: 96
                     });
                 }
-                 // -------------------------------------------------------------------------------------------
+
+                this.isWearingDisguise = Loots.fromString<SkinDefinition>(skinID).isDisguise;
+                this.disguiseMaterial = Loots.fromString<SkinDefinition>(skinID).material;
+                // -------------------------------------------------------------------------------------------
 
                 this.game.uiManager.skinID = skinID;
                 this.game.uiManager.updateWeapons();
@@ -539,7 +552,7 @@ export class Player extends GameObject<ObjectCategory.Player> {
             body
                 .setFrame(skinDef.isDisguise ? skinID : `${skinID}_base`)
                 .setTint(tint);
-            
+
             leftFist
                 .setFrame(skinDef.isDisguise ? "disguise_fist" : `${skinID}_fist`)
                 .setTint(tint);
@@ -547,10 +560,10 @@ export class Player extends GameObject<ObjectCategory.Player> {
                 .setFrame(skinDef.isDisguise ? "disguise_fist" : `${skinID}_fist`)
                 .setTint(tint);
             leftLeg
-                ?.setFrame(skinDef.isDisguise ? "disguise_fist" :  `${skinID}_fist`)
+                ?.setFrame(skinDef.isDisguise ? "disguise_fist" : `${skinID}_fist`)
                 .setTint(tint);
             rightLeg
-                ?.setFrame(skinDef.isDisguise ? "disguise_fist" :  `${skinID}_fist`)
+                ?.setFrame(skinDef.isDisguise ? "disguise_fist" : `${skinID}_fist`)
                 .setTint(tint);
 
             // ---------------------------------
@@ -1396,29 +1409,57 @@ export class Player extends GameObject<ObjectCategory.Player> {
     }
 
     hitEffect(position: Vector, angle: number, sound?: string): void {
-        this.game.soundManager.play(
-            sound ?? (randomBoolean() ? "player_hit_1" : "player_hit_2"),
-            {
+
+        if (!this.isWearingDisguise) {
+            this.game.soundManager.play(
+                sound ?? (randomBoolean() ? "player_hit_1" : "player_hit_2"), {
+                    position,
+                    falloff: 0.2,
+                    maxRange: 96
+            });
+
+            // Regular particles
+            this.game.particleManager.spawnParticle({
+                frames: "blood_particle",
+                zIndex: ZIndexes.Players + 1,
+                position,
+                lifetime: 1000,
+                scale: {
+                    start: 0.5,
+                    end: 1
+                },
+                alpha: {
+                    start: 1,
+                    end: 0
+                },
+                speed: Vec.fromPolar(angle, randomFloat(0.5, 1))
+            });
+        }
+        else {
+            // Play additional obstacle hit sound if the player is wearing a disguise.
+            this.game.soundManager.play(`${this.disguiseMaterial}_hit_${randomBoolean() ? "1" : "2"}`, {
                 position,
                 falloff: 0.2,
                 maxRange: 96
             });
 
-        this.game.particleManager.spawnParticle({
-            frames: "blood_particle",
-            zIndex: ZIndexes.Players + 1,
-            position,
-            lifetime: 1000,
-            scale: {
-                start: 0.5,
-                end: 1
-            },
-            alpha: {
-                start: 1,
-                end: 0
-            },
-            speed: Vec.fromPolar(angle, randomFloat(0.5, 1))
-        });
+            // Obstacle particles
+            this.game.particleManager.spawnParticle({
+                frames: `${this.disguiseMaterial}_particle`,
+                zIndex: ZIndexes.Players + 1,
+                position,
+                lifetime: 1000,
+                scale: {
+                    start: 0.5,
+                    end: 1
+                },
+                alpha: {
+                    start: 1,
+                    end: 0
+                },
+                speed: Vec.fromPolar(angle, randomFloat(0.5, 1))
+            });
+        }
     }
 
     destroy(): void {
