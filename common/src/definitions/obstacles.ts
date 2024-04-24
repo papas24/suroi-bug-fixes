@@ -472,6 +472,22 @@ export const Obstacles = ObjectDefinitions.create<ObstacleDefinition>()(
             hasLoot: true
         },
         {
+            idString: "dark_pumpkin",
+            name: "Dark Pumpkin",
+            material: "pumpkin",
+            health: 250,
+            scale: {
+                spawnMin: 0.9,
+                spawnMax: 1.1,
+                destroy: 0.5
+            },
+            hitbox: new CircleHitbox(2.4),
+            spawnHitbox: new CircleHitbox(3),
+            rotationMode: RotationMode.Full,
+            allowFlyover: FlyoverPref.Always,
+            hasLoot: true
+        },
+        {
             idString: "flint_stone",
             name: "Flint Stone",
             material: "stone",
@@ -487,6 +503,24 @@ export const Obstacles = ObjectDefinitions.create<ObstacleDefinition>()(
             hitbox: RectangleHitbox.fromRect(6.1, 6.1),
             rotationMode: RotationMode.None,
             particleVariations: 2
+        },
+        {
+            idString: "halloween_light",
+            name: "Halloween Light",
+            material: "glass",
+            health: 10000,
+            indestructible: true,
+            noResidue: true,
+            scale: {
+                spawnMin: 0.9,
+                spawnMax: 1.1,
+                destroy: 0.8
+            },
+            hitbox: new CircleHitbox(4.2),
+            noCollisions: true,
+            rotationMode: RotationMode.Full,
+            particleVariations: 0,
+            zIndex: ZIndexes.ObstaclesLayer3
         },
         {
             idString: "bush",
