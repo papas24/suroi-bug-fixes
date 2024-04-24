@@ -14,6 +14,10 @@ import { type Tween } from "../utils/tween";
 import { GameObject } from "./gameObject";
 import { type Player } from "./player";
 
+// Halloween Disguises
+import { type SkinDefinition } from "../../../../common/src/definitions/skins";
+import { Loots } from "../../../../common/src/definitions/loots";
+
 export class Loot extends GameObject {
     override readonly type = ObjectCategory.Loot;
     definition!: LootDefinition;
@@ -46,7 +50,8 @@ export class Loot extends GameObject {
             const definition = this.definition = data.full.definition;
             const itemType = definition.itemType;
 
-            this.images.item.setFrame(`${definition.idString}${itemType === ItemType.Skin ? "_base" : ""}`);
+            // Halloween Disguises
+            this.images.item.setFrame(`${definition.idString}${itemType === ItemType.Skin ? Loots.fromString<SkinDefinition>(definition.idString).isDisguise ? "" : "_base" : ""}`);
 
             this.container.addChild(this.images.background, this.images.item);
 
@@ -82,8 +87,14 @@ export class Loot extends GameObject {
                         if (definition.grassTint) {
                             this.images.item.setTint(GHILLIE_TINT);
                         }
-
-                        this.images.item.setAngle(90).setScale(0.75);
+                        
+                        // Halloween Disguises
+                        if (!Loots.fromString<SkinDefinition>(definition.idString).isDisguise) {
+                            this.images.item.setAngle(90).setScale(0.75);
+                        }
+                        else {
+                            this.images.item.setAngle(0).setScale(0.30);
+                        }
                     }
                     break;
                 }
