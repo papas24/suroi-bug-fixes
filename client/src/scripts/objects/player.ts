@@ -1,5 +1,5 @@
 import $ from "jquery";
-import { Container, Text, TilingSprite } from "pixi.js";
+import { Container, Text, TilingSprite, removeStructAndGroupDuplicates } from "pixi.js";
 import { AnimationType, GameConstants, InputActions, ObjectCategory, PlayerActions, SpectateActions, ZIndexes } from "../../../../common/src/constants";
 import { Ammos } from "../../../../common/src/definitions/ammos";
 import { type ArmorDefinition } from "../../../../common/src/definitions/armors";
@@ -27,9 +27,6 @@ import { type Tween } from "../utils/tween";
 import { GameObject } from "./gameObject";
 import { Obstacle } from "./obstacle";
 import { type ParticleEmitter } from "./particles";
-
-// Halloween Disguises
-import { type ObstacleDefinition } from "../../../../common/src/definitions/obstacles";
 
 export class Player extends GameObject<ObjectCategory.Player> {
     override readonly type = ObjectCategory.Player;
@@ -79,6 +76,7 @@ export class Player extends GameObject<ObjectCategory.Player> {
         readonly aimTrail: TilingSprite
         readonly vest: SuroiSprite
         readonly body: SuroiSprite
+        readonly disguise: SuroiSprite
         readonly leftFist: SuroiSprite
         readonly rightFist: SuroiSprite
         readonly leftLeg?: SuroiSprite
@@ -141,6 +139,7 @@ export class Player extends GameObject<ObjectCategory.Player> {
             aimTrail: new TilingSprite({ texture: SuroiSprite.getTexture("aimTrail"), width: 20, height: 6000 }),
             vest: new SuroiSprite().setVisible(false),
             body: new SuroiSprite(),
+            disguise: new SuroiSprite(),
             leftFist: new SuroiSprite(),
             rightFist: new SuroiSprite(),
             leftLeg: game.teamMode ? new SuroiSprite().setPos(-38, 26).setZIndex(-1) : undefined,
@@ -153,6 +152,7 @@ export class Player extends GameObject<ObjectCategory.Player> {
             waterOverlay: new SuroiSprite("water_overlay").setVisible(false).setTint(COLORS.water)
         };
 
+        this.disguiseContainer.addChild(this.images.disguise); // Disguise container
         this.container.addChild(
             this.images.aimTrail,
             this.images.vest,
@@ -427,6 +427,7 @@ export class Player extends GameObject<ObjectCategory.Player> {
 
         if (isNew || !this.game.console.getBuiltInCVar("cv_movement_smoothing")) {
             this.container.position.copyFrom(toPixiCoords(this.position));
+            this.disguiseContainer.position.copyFrom(toPixiCoords(this.position)); // Disguise container
             this.emote.container.position.copyFrom(Vec.add(toPixiCoords(this.position), Vec.create(0, -175)));
             this.teammateName?.container.position.copyFrom(Vec.add(toPixiCoords(this.position), Vec.create(0, 95)));
         }
@@ -439,6 +440,8 @@ export class Player extends GameObject<ObjectCategory.Player> {
             const full = data.full;
 
             this.container.visible = !full.dead;
+            this.disguiseContainer.visible = this.container.visible; // Disguise container
+
             this.dead = full.dead;
 
             this.teamID = data.full.teamID;
@@ -489,6 +492,7 @@ export class Player extends GameObject<ObjectCategory.Player> {
             }
 
             this.container.alpha = full.invulnerable ? 0.5 : 1;
+            this.disguiseContainer.alpha = this.container.alpha; // Disguise container
 
             if (this.downed !== full.downed) {
                 this.downed = full.downed;
@@ -550,42 +554,32 @@ export class Player extends GameObject<ObjectCategory.Player> {
             const skinDef = Loots.fromString<SkinDefinition>(skinID);
             const tint = skinDef.grassTint ? GHILLIE_TINT : 0xffffff;
 
-            const { body, leftFist, rightFist, leftLeg, rightLeg } = this.images;
+            const { body, leftFist, rightFist, leftLeg, rightLeg, disguise } = this.images;
 
-            body
-                .setFrame(skinDef.isDisguise ? skinID : `${skinID}_base`)
-                .setTint(tint);
-
-            leftFist
-                .setFrame(skinDef.isDisguise ? "disguise_fist" : `${skinID}_fist`)
-                .setTint(tint);
-            rightFist
-                .setFrame(skinDef.isDisguise ? "disguise_fist" : `${skinID}_fist`)
-                .setTint(tint);
-            leftLeg
-                ?.setFrame(skinDef.isDisguise ? "disguise_fist" : `${skinID}_fist`)
-                .setTint(tint);
-            rightLeg
-                ?.setFrame(skinDef.isDisguise ? "disguise_fist" : `${skinID}_fist`)
-                .setTint(tint);
-
-            // ---------------------------------
-            // Halloween Disguises: Do not
-            // show fists/legs if disguised
-            // ---------------------------------
             if (skinDef.isDisguise) {
-                leftFist.setVisible(false);
-                rightFist.setVisible(false);
-                leftLeg?.setVisible(false);
-                rightLeg?.setVisible(false);
+                disguise.setFrame(skinID);
+                disguise.setVisible(true);
+                disguise.setZIndex(10);
             }
             else {
-                leftFist.setVisible(true);
-                rightFist.setVisible(true);
-                leftLeg?.setVisible(true);
-                rightLeg?.setVisible(true);
+                disguise.setVisible(false);
+                body
+                    .setFrame(`${skinID}_base`)
+                    .setTint(tint);
+
+                leftFist
+                    .setFrame(skinDef.isDisguise ? "disguise_fist" : `${skinID}_fist`)
+                    .setTint(tint);
+                rightFist
+                    .setFrame(skinDef.isDisguise ? "disguise_fist" : `${skinID}_fist`)
+                    .setTint(tint);
+                leftLeg
+                    ?.setFrame(skinDef.isDisguise ? "disguise_fist" : `${skinID}_fist`)
+                    .setTint(tint);
+                rightLeg
+                    ?.setFrame(skinDef.isDisguise ? "disguise_fist" : `${skinID}_fist`)
+                    .setTint(tint);
             }
-            // ---------------------------------
 
             const { hideEquipment, helmetLevel, vestLevel, backpackLevel } = this;
 
@@ -626,6 +620,7 @@ export class Player extends GameObject<ObjectCategory.Player> {
                 : this.downed
                     ? ZIndexes.DownedPlayers
                     : ZIndexes.Players;
+            this.disguiseContainer.zIndex = this.container.zIndex + 1; // Disguise Container
         }
 
         if (data.action !== undefined) {
@@ -1416,9 +1411,9 @@ export class Player extends GameObject<ObjectCategory.Player> {
         if (!this.isWearingDisguise) {
             this.game.soundManager.play(
                 sound ?? (randomBoolean() ? "player_hit_1" : "player_hit_2"), {
-                    position,
-                    falloff: 0.2,
-                    maxRange: 96
+                position,
+                falloff: 0.2,
+                maxRange: 96
             });
 
             // Regular particles
