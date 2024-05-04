@@ -276,6 +276,40 @@ export const Buildings = ObjectDefinitions.create<BuildingDefinition>()(
             ]
         },
         {
+            // Pumpkin Farm
+            idString: "pumpkin_farm",
+            name: "Pumpkin Farm",
+            spawnHitbox: RectangleHitbox.fromRect(75, 75, Vec.create(0, 0)),
+            spawnMode: MapObjectSpawnMode.Grass,
+            floorImages: [{
+                key: "pumpkin_farm_floor",
+                position: Vec.create(0, 0)
+            }],
+            obstacles: [
+                { idString: "dark_pumpkin", position: Vec.create(25, 25) },
+                { idString: "pumpkin", position: Vec.create(0, 25) },
+                { idString: "dark_pumpkin", position: Vec.create(-25, 25) },
+
+                { idString: "pumpkin", position: Vec.create(25, 0) },
+                { idString: "usas_pumpkin", position: Vec.create(0, 0) },
+                { idString: "pumpkin", position: Vec.create(-25, 0) },
+
+                { idString: "dark_pumpkin", position: Vec.create(25, -25) },
+                { idString: "pumpkin", position: Vec.create(0, -25) },
+                { idString: "dark_pumpkin", position: Vec.create(-25, -25) },
+
+                { idString: "dark_pumpkin", position: Vec.create(15, -15) },
+                { idString: "dark_pumpkin", position: Vec.create(-15, -15) },
+                { idString: "dark_pumpkin", position: Vec.create(15, 15) },
+                { idString: "dark_pumpkin", position: Vec.create(-15, 15) },
+
+                { idString: "pumpkin", position: Vec.create(8, -8) },
+                { idString: "pumpkin", position: Vec.create(-8, -8) },
+                { idString: "pumpkin", position: Vec.create(8, 8) },
+                { idString: "pumpkin", position: Vec.create(-8, 8) },
+            ],
+        },
+        {
             // Junky-Yard
             idString: "junk_yard",
             name: "Junk Yard",
