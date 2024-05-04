@@ -53,6 +53,7 @@ export abstract class GameObject<Cat extends ObjectCategory = ObjectCategory> {
                 )
             )
         );
+        this.disguiseContainer.position = this.container.position; // disguise container
     }
 
     private _oldRotation?: number;
@@ -87,6 +88,7 @@ export abstract class GameObject<Cat extends ObjectCategory = ObjectCategory> {
     dead = false;
 
     readonly container: Container;
+    readonly disguiseContainer: Container; // Disguise container
 
     readonly timeouts = new Set<Timeout>();
 
@@ -101,8 +103,10 @@ export abstract class GameObject<Cat extends ObjectCategory = ObjectCategory> {
         this.id = id;
 
         this.container = new Container();
+        this.disguiseContainer = new Container(); // Disguise container
 
         this.game.camera.addObject(this.container);
+        this.game.camera.addObject(this.disguiseContainer); // Disguise container
 
         if (HITBOX_DEBUG_MODE) {
             this.debugGraphics = new Graphics();
@@ -120,6 +124,7 @@ export abstract class GameObject<Cat extends ObjectCategory = ObjectCategory> {
             timeout.kill();
         }
         this.container.destroy();
+        this.disguiseContainer.destroy();
     }
 
     playSound(name: string, options?: Partial<Omit<SoundOptions, "position">>): GameSound {
