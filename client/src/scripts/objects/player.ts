@@ -568,16 +568,16 @@ export class Player extends GameObject<ObjectCategory.Player> {
                     .setTint(tint);
 
                 leftFist
-                    .setFrame(skinDef.isDisguise ? "disguise_fist" : `${skinID}_fist`)
+                    .setFrame(`${skinID}_fist`)
                     .setTint(tint);
                 rightFist
-                    .setFrame(skinDef.isDisguise ? "disguise_fist" : `${skinID}_fist`)
+                    .setFrame(`${skinID}_fist`)
                     .setTint(tint);
                 leftLeg
-                    ?.setFrame(skinDef.isDisguise ? "disguise_fist" : `${skinID}_fist`)
+                    ?.setFrame(`${skinID}_fist`)
                     .setTint(tint);
                 rightLeg
-                    ?.setFrame(skinDef.isDisguise ? "disguise_fist" : `${skinID}_fist`)
+                    ?.setFrame(`${skinID}_fist`)
                     .setTint(tint);
             }
 
@@ -860,11 +860,11 @@ export class Player extends GameObject<ObjectCategory.Player> {
                 this.images.leftFist.setZIndex(4);
                 this.images.rightFist.setZIndex(4);
                 this.images.body.setZIndex(2);
-                this.images.weapon.setZIndex(this.isWearingDisguise ? 1 : 5);
+                this.images.weapon.setZIndex(5);
                 break;
             }
         }
-        this.images.waterOverlay.setZIndex(this.images.body.zIndex + (this.isWearingDisguise ? -1 : 1)); // Halloween disguises layering
+        this.images.waterOverlay.setZIndex(this.images.body.zIndex + 1);
         this.container.sortChildren();
     }
 
