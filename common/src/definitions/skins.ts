@@ -8,6 +8,7 @@ export interface SkinDefinition extends ItemDefinition {
     readonly isDisguise: boolean
     readonly material: string
     readonly obstacle: string
+    readonly obstacleSprite: string
     readonly explodes: boolean
     readonly roleRequired?: string
 }
@@ -23,6 +24,7 @@ export const Skins = ObjectDefinitions.create<SkinDefinition>()(
             isDisguise: false,
             material: undefined,
             obstacle: undefined,
+            obstacleSprite: undefined,
             explodes: false
         }),
         skin_factory: (name: string) => ({
@@ -72,7 +74,7 @@ export const Skins = ObjectDefinitions.create<SkinDefinition>()(
         simple("disguise", ["grenade_crate", "crate"], ["NATO Employee"]),
         simple("disguise", ["flint_stone", "stone"], ["FLINT STONES"]),
         simple("disguise", ["barrel", "metal", true], ["Fish in a Barrel"]),
-        simple("disguise", ["oak_tree", "tree"], ["Barkskin"]),
+        simple("disguise", ["pine_tree", "tree"], ["Barkskin"]),
         simple("disguise", ["rock", "stone"], ["Rock Solid"]),
         simple("disguise", ["toilet", "porcelain"], ["Smelly"]),
         simple("disguise", ["large_refinery_barrel", "metal", true], ["Large Suicide Bomber"]),
