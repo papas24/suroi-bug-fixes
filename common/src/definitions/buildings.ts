@@ -268,7 +268,7 @@ export const Buildings = ObjectDefinitions.create<BuildingDefinition>()(
             // Pumpkin with light (has normal loot like a crate)
             idString: "light_pumpkin",
             name: "Pumpkin",
-            spawnHitbox: RectangleHitbox.fromRect(20, 20),
+            spawnHitbox: RectangleHitbox.fromRect(10, 10),
             scopeHitbox: undefined,
             obstacles: [
                 { idString: "halloween_light", position: Vec.create(0, 0) },
@@ -309,66 +309,162 @@ export const Buildings = ObjectDefinitions.create<BuildingDefinition>()(
                 { idString: "pumpkin", position: Vec.create(-8, 8) },
             ],
         },
+
+        // ---------------------------------------------------------------------------
+        // Junkyard (Halloween Mode)
+        // ---------------------------------------------------------------------------
+        {
+            idString: "junk_yard_patch_crates",
+            name: "Junk Yard Patch",
+            rotationMode: RotationMode.None,
+            spawnHitbox: RectangleHitbox.fromRect(45, 45),
+            scopeHitbox: undefined,
+            floorImages: [
+                {
+                    key: "junkyard_patch_square",
+                    position: Vec.create(0, 0)
+                }
+            ],
+            obstacles: [
+                { idString: { regular_crate: 1, ammo_crate: 1 }, position: Vec.create(10, -10) },
+                { idString: { regular_crate: 1, ammo_crate: 1 }, position: Vec.create(-10, -10) },
+                { idString: { regular_crate: 1, ammo_crate: 1 }, position: Vec.create(10, 10) },
+                { idString: { regular_crate: 1, ammo_crate: 1 }, position: Vec.create(-10, 10) },
+            ]
+        },
+        {
+            idString: "junk_yard_patch_fridges",
+            name: "Junk Yard Patch",
+            rotationMode: RotationMode.None,
+            spawnHitbox: RectangleHitbox.fromRect(65, 35),
+            scopeHitbox: undefined,
+            floorImages: [
+                {
+                    key: "junkyard_patch",
+                    position: Vec.create(0, 0)
+                }
+            ],
+            obstacles: [
+                { idString: "fridge", position: Vec.create(-20, -10), rotation: 0 },
+                { idString: "fridge", position: Vec.create(0, -10), rotation: 0 },
+                { idString: "fridge", position: Vec.create(20, -10), rotation: 0 },
+
+                { idString: "fridge", position: Vec.create(-20, 10), rotation: 0 },
+                { idString: "fridge", position: Vec.create(0, 10), rotation: 0 },
+                { idString: "fridge", position: Vec.create(20, 10), rotation: 0 },
+            ]
+        },
+        {
+            idString: "junk_yard_patch_toilets",
+            name: "Junk Yard Patch",
+            rotationMode: RotationMode.None,
+            spawnHitbox: RectangleHitbox.fromRect(65, 35),
+            scopeHitbox: undefined,
+            floorImages: [
+                {
+                    key: "junkyard_patch",
+                    position: Vec.create(0, 0)
+                }
+            ],
+            obstacles: [
+                { idString: "toilet", position: Vec.create(-20, -10), rotation: 0 },
+                { idString: "toilet", position: Vec.create(0, -10), rotation: 0 },
+                { idString: "toilet", position: Vec.create(20, -10), rotation: 0 },
+
+                { idString: "toilet", position: Vec.create(-20, 10), rotation: 0 },
+                { idString: "toilet", position: Vec.create(0, 10), rotation: 0 },
+                { idString: "toilet", position: Vec.create(20, 10), rotation: 0 },
+            ]
+        },
+        {
+            idString: "junk_yard_patch_stoves",
+            name: "Junk Yard Patch",
+            rotationMode: RotationMode.None,
+            spawnHitbox: RectangleHitbox.fromRect(45, 25),
+            scopeHitbox: undefined,
+            floorImages: [
+                {
+                    key: "junkyard_patch_2",
+                    position: Vec.create(0, 0)
+                }
+            ],
+            obstacles: [
+                { idString: "stove", position: Vec.create(-10, -5), rotation: 0 },
+                { idString: "stove", position: Vec.create(0, -7), rotation: 0 },
+                { idString: "stove", position: Vec.create(10, -5), rotation: 0 },
+
+                { idString: "stove", position: Vec.create(-5, 5), rotation: 0 },
+                { idString: "stove", position: Vec.create(5, 5), rotation: 0 },
+            ]
+        },
+        {
+            idString: "junk_yard_patch_barrels",
+            name: "Junk Yard Patch",
+            rotationMode: RotationMode.None,
+            spawnHitbox: RectangleHitbox.fromRect(45, 25),
+            scopeHitbox: undefined,
+            floorImages: [
+                {
+                    key: "junkyard_patch_2",
+                    position: Vec.create(0, 0)
+                }
+            ],
+            obstacles: [
+                { idString: { barrel: 1, super_barrel: 1 }, position: Vec.create(-10, -5) },
+                { idString: { barrel: 1, super_barrel: 1 }, position: Vec.create(0, -5) },
+                { idString: { barrel: 1, super_barrel: 1 }, position: Vec.create(10, -5) },
+
+                { idString: { barrel: 1, super_barrel: 1 }, position: Vec.create(-10, 5) },
+                { idString: { barrel: 1, super_barrel: 1 }, position: Vec.create(0, 5) },
+                { idString: { barrel: 1, super_barrel: 1 }, position: Vec.create(10, 5) },
+            ]
+        },
         {
             // Junky-Yard
             idString: "junk_yard",
             name: "Junk Yard",
             rotationMode: RotationMode.None,
-            spawnHitbox: RectangleHitbox.fromRect(200, 200),
-            scopeHitbox: RectangleHitbox.fromRect(60, 60),
-            /*floorImages: [{
-                key: "porta_potty_floor",
-                position: Vec.create(0, 1.5)
-            }],*/
+            spawnHitbox: RectangleHitbox.fromRect(200, 180),
+            scopeHitbox: undefined,
             floors: [],
             obstacles: [
+                // Loot Tree
                 { idString: "dead_tree_big", position: Vec.create(0, 0) },
 
-                // Top Right
-                { idString: "stove", position: Vec.create(50, 50) },
-                { idString: "stove", position: Vec.create(50, 70) },
-                { idString: "stove", position: Vec.create(75, 70) },
-                { idString: "stove", position: Vec.create(25, 50) },
-                { idString: "stove", position: Vec.create(25, 70) },
-                { idString: "stove", position: Vec.create(75, 50) },
-
-                // Top Left
-                { idString: "fridge", position: Vec.create(-50, 50) },
-                { idString: "fridge", position: Vec.create(-50, 70) },
-                { idString: "fridge", position: Vec.create(-75, 70) },
-                { idString: "fridge", position: Vec.create(-25, 50) },
-                { idString: "fridge", position: Vec.create(-25, 70) },
-                { idString: "fridge", position: Vec.create(-75, 50) },
-
-                // Bottom Left
-                { idString: "toilet", position: Vec.create(-50, -50) },
-                { idString: "toilet", position: Vec.create(-50, -70) },
-                { idString: "toilet", position: Vec.create(-75, -70) },
-                { idString: "toilet", position: Vec.create(-25, -50) },
-                { idString: "toilet", position: Vec.create(-25, -70) },
-                { idString: "toilet", position: Vec.create(-75, -50) },
-
-                
-                // Bottom Right
-                { idString: "regular_crate", position: Vec.create(50, -50) },
-                { idString: "regular_crate", position: Vec.create(50, -70) },
-                { idString: "regular_crate", position: Vec.create(75, -70) },
-                { idString: "regular_crate", position: Vec.create(25, -50) },
-                { idString: "regular_crate", position: Vec.create(25, -70) },
-                { idString: "regular_crate", position: Vec.create(75, -50) },
-
-                // Around the big dead tree
-                { idString: "halloween_light", position: Vec.create(30, 0) },
-                { idString: "halloween_light", position: Vec.create(-30, 0) },
-                { idString: "halloween_light", position: Vec.create(0, 30) },
-                { idString: "halloween_light", position: Vec.create(0, -30) },
+                // Around the big dead tree (star)
+                { idString: "halloween_light", position: Vec.create(35, -10) },
+                { idString: "halloween_light", position: Vec.create(-35, -10) },
+                { idString: "halloween_light", position: Vec.create(0, -35) },
+                { idString: "halloween_light", position: Vec.create(20, 30) },
+                { idString: "halloween_light", position: Vec.create(-20, 30) },
             ],
 
             lootSpawners: [
-                { table: "ground_loot", position: Vec.create(75, 0) },
-                { table: "ground_loot", position: Vec.create(-75, 0) }
+                { table: "ground_loot", position: Vec.create(-75, 0) }, // Left
+                { table: "ground_loot", position: Vec.create(65, 15) }, // Right
+                { table: "ground_loot", position: Vec.create(0, 65) }, // Bottom
+                { table: "ground_loot", position: Vec.create(15, -60) } // Top
+            ],
+            subBuildings: [
+                { // Fridges Or Toilets
+                    idString: { junk_yard_patch_fridges: 1,  junk_yard_patch_toilets: 1},
+                    position: Vec.create(-50, -60)
+                },
+                { // Stoves
+                    idString: "junk_yard_patch_stoves",
+                    position: Vec.create(60, 55)
+                },
+                { // Barrels
+                    idString: "junk_yard_patch_barrels",
+                    position: Vec.create(-58, 45)
+                },
+                { // Crates
+                    idString: "junk_yard_patch_crates",
+                    position: Vec.create(70, -35)
+                }
             ]
         },
+        // ---------------------------------------------------------------------------
         {
             idString: "green_house",
             name: "Green House",
@@ -724,6 +820,16 @@ export const Buildings = ObjectDefinitions.create<BuildingDefinition>()(
                 RectangleHitbox.fromRect(33.50, 72, Vec.create(-32.75, 0)),
                 RectangleHitbox.fromRect(65.50, 29.50, Vec.create(16.75, -21.25))
             ),
+            puzzle: {
+                triggerInteractOn: "large_refinery_barrel",
+                interactDelay: 1000
+            },
+            sounds: {
+                solved: "generator_running",
+                position: Vec.create(0, 0),
+                maxRange: 500,
+                falloff: 2
+            },
             floorImages: [
                 {
                     key: "refinery_floor",
@@ -822,10 +928,12 @@ export const Buildings = ObjectDefinitions.create<BuildingDefinition>()(
                     idString: { barrel: 1, super_barrel: 1 },
                     position: Vec.create(-26, -30)
                 },
-                {
-                    idString: { barrel: 1, super_barrel: 1 },
-                    position: Vec.create(-21.5, 4)
-                },
+                // {
+                //     idString: { barrel: 1, super_barrel: 1 },
+                //     position: Vec.create(-21.5, 4)
+                // },
+                // Detonator
+                { idString: "control_panel", position: Vec.create(-21.5, 2), rotation: 3, puzzlePiece: true },
                 {
                     idString: "regular_crate",
                     position: Vec.create(28.75, -30)
