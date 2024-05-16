@@ -326,10 +326,10 @@ export const Buildings = ObjectDefinitions.create<BuildingDefinition>()(
                 }
             ],
             obstacles: [
-                { idString: { regular_crate: 1, ammo_crate: 1 }, position: Vec.create(10, -10) },
-                { idString: { regular_crate: 1, ammo_crate: 1 }, position: Vec.create(-10, -10) },
-                { idString: { regular_crate: 1, ammo_crate: 1 }, position: Vec.create(10, 10) },
-                { idString: { regular_crate: 1, ammo_crate: 1 }, position: Vec.create(-10, 10) },
+                { idString: { regular_crate: 1, ammo_crate: .85 }, position: Vec.create(10, -10) },
+                { idString: { regular_crate: 1, ammo_crate: .85 }, position: Vec.create(-10, -10) },
+                { idString: { regular_crate: 1, ammo_crate: .85 }, position: Vec.create(10, 10) },
+                { idString: { regular_crate: 1, ammo_crate: .85 }, position: Vec.create(-10, 10) },
             ]
         },
         {
