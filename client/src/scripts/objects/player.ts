@@ -49,13 +49,6 @@ export class Player extends GameObject<ObjectCategory.Player> {
         return this.id === this.game.activePlayerID;
     }
 
-    // -----------------------------
-    // Halloween Disguises
-    // -----------------------------
-    isWearingDisguise?: boolean
-    disguiseMaterial?: string
-    // -----------------------------
-
     footstepSound?: GameSound;
     actionSound?: GameSound;
 
@@ -138,13 +131,6 @@ export class Player extends GameObject<ObjectCategory.Player> {
 
     constructor(game: Game, id: number, data: Required<ObjectsNetData[ObjectCategory.Player]>) {
         super(game, id);
-
-        // -------------------------------------
-        // Disguises
-        // -------------------------------------
-        this.isWearingDisguise = false;
-        this.disguiseMaterial = undefined;
-        // --------------------------------------
 
         this.images = {
             aimTrail: new TilingSprite({ texture: SuroiSprite.getTexture("aimTrail"), width: 20, height: 6000 }),
@@ -553,14 +539,6 @@ export class Player extends GameObject<ObjectCategory.Player> {
 
             const skinID = full.skin.idString;
             if (this.isActivePlayer) {
-
-                // -------------------------------------------------------------------------------------------
-                // Halloween Disguises
-                // -------------------------------------------------------------------------------------------
-                this.isWearingDisguise = Loots.fromString<SkinDefinition>(skinID).isDisguise;
-                this.disguiseMaterial = Loots.fromString<SkinDefinition>(skinID).material;
-                // -------------------------------------------------------------------------------------------
-
                 this.game.uiManager.skinID = skinID;
                 this.game.uiManager.updateWeapons();
             }
