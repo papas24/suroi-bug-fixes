@@ -2,7 +2,7 @@ import { ZIndexes } from "../constants";
 import { type Orientation, type Variation } from "../typings";
 import { CircleHitbox, HitboxGroup, PolygonHitbox, RectangleHitbox, type Hitbox } from "../utils/hitbox";
 import { ContainerTints, MapObjectSpawnMode, ObjectDefinitions, type ObjectDefinition, type ReferenceTo } from "../utils/objectDefinitions";
-import { randomSign, randomVector } from "../utils/random";
+import { random, randomSign, randomVector } from "../utils/random"; // added random for junkyard
 import { type FloorTypes } from "../utils/terrain";
 import { Vec, type Vector } from "../utils/vector";
 import { type DecalDefinition } from "./decals";
@@ -332,6 +332,10 @@ export const Buildings = ObjectDefinitions.create<BuildingDefinition>()(
                 { idString: { regular_crate: 1, ammo_crate: .85 }, position: Vec.create(-10, 10) },
             ]
         },
+
+        // ---------------------------------------------------------------------------------------
+        // Work-around
+        // ---------------------------------------------------------------------------------------
         {
             idString: "junk_yard_patch_fridges",
             name: "Junk Yard Patch",
@@ -345,15 +349,18 @@ export const Buildings = ObjectDefinitions.create<BuildingDefinition>()(
                 }
             ],
             obstacles: [
-                { idString: "fridge", position: Vec.create(-20, -10), rotation: 0 },
-                { idString: "fridge", position: Vec.create(0, -10), rotation: 0 },
-                { idString: "fridge", position: Vec.create(20, -10), rotation: 0 },
-
-                { idString: "fridge", position: Vec.create(-20, 10), rotation: 0 },
-                { idString: "fridge", position: Vec.create(0, 10), rotation: 0 },
-                { idString: "fridge", position: Vec.create(20, 10), rotation: 0 },
+                // Generate up to 6 obstacles.
+                ...(() => Array.from(
+                    { length: random(3, 6) },
+                    (_, i) => ({
+                        idString: "fridge",
+                        position: Vec.create(-20 + ((i >= 3 ? (i - 3) : i) * 20), (i >= 3 ? 10 : -10)),
+                        rotation: 0
+                    })
+                ))(),
             ]
         },
+
         {
             idString: "junk_yard_patch_toilets",
             name: "Junk Yard Patch",
@@ -367,15 +374,40 @@ export const Buildings = ObjectDefinitions.create<BuildingDefinition>()(
                 }
             ],
             obstacles: [
-                { idString: "toilet", position: Vec.create(-20, -10), rotation: 0 },
-                { idString: "toilet", position: Vec.create(0, -10), rotation: 0 },
-                { idString: "toilet", position: Vec.create(20, -10), rotation: 0 },
-
-                { idString: "toilet", position: Vec.create(-20, 10), rotation: 0 },
-                { idString: "toilet", position: Vec.create(0, 10), rotation: 0 },
-                { idString: "toilet", position: Vec.create(20, 10), rotation: 0 },
+                // Generate up to 6 obstacles.
+                ...(() => Array.from(
+                    { length: random(3, 6) },
+                    (_, i) => ({
+                        idString: "toilet",
+                        position: Vec.create(-20 + ((i >= 3 ? (i - 3) : i) * 20), (i >= 3 ? 10 : -10)),
+                        rotation: 0
+                    })
+                ))(),
             ]
         },
+
+        {
+            idString: "junk_yard_patch_fridges_or_toilets",
+            name: "Junk Yard Patch",
+            rotationMode: RotationMode.None,
+            spawnHitbox: RectangleHitbox.fromRect(65, 35),
+            scopeHitbox: undefined,
+            floorImages: [
+                {
+                    key: "junkyard_patch",
+                    position: Vec.create(0, 0)
+                }
+            ],
+            obstacles: [],
+            subBuildings: [
+                { // Fridges Or Toilets
+                    idString: { junk_yard_patch_toilets: 1, junk_yard_patch_fridges: 1 },
+                    position: Vec.create(0, 0)
+                },
+            ]
+        },
+        // ---------------------------------------------------------------------------------------
+
         {
             idString: "junk_yard_patch_stoves",
             name: "Junk Yard Patch",
@@ -397,6 +429,28 @@ export const Buildings = ObjectDefinitions.create<BuildingDefinition>()(
                 { idString: "stove", position: Vec.create(5, 5), rotation: 0 },
             ]
         },
+
+        {
+            idString: "junk_yard_patch_tables",
+            name: "Junk Yard Patch",
+            rotationMode: RotationMode.None,
+            spawnHitbox: RectangleHitbox.fromRect(45, 25),
+            scopeHitbox: undefined,
+            floorImages: [
+                {
+                    key: "junkyard_patch_2",
+                    position: Vec.create(0, 0)
+                }
+            ],
+            obstacles: [
+                { idString: "table", position: Vec.create(-10, -5), rotation: 1 },
+                { idString: "table", position: Vec.create(6, -5), rotation: 1 },
+
+                { idString: "table", position: Vec.create(-12, 5), rotation: 1 },
+                { idString: "table", position: Vec.create(12, 5), rotation: 1 },
+            ]
+        },
+
         {
             idString: "junk_yard_patch_barrels",
             name: "Junk Yard Patch",
@@ -410,15 +464,18 @@ export const Buildings = ObjectDefinitions.create<BuildingDefinition>()(
                 }
             ],
             obstacles: [
-                { idString: { barrel: 1, super_barrel: 1 }, position: Vec.create(-10, -5) },
-                { idString: { barrel: 1, super_barrel: 1 }, position: Vec.create(0, -5) },
-                { idString: { barrel: 1, super_barrel: 1 }, position: Vec.create(10, -5) },
-
-                { idString: { barrel: 1, super_barrel: 1 }, position: Vec.create(-10, 5) },
-                { idString: { barrel: 1, super_barrel: 1 }, position: Vec.create(0, 5) },
-                { idString: { barrel: 1, super_barrel: 1 }, position: Vec.create(10, 5) },
+                // Generate up to 6 obstacles.
+                ...(() => Array.from(
+                    { length: random(3, 6) },
+                    (_, i) => ({
+                        idString: { barrel: 1, super_barrel: 1 },
+                        position: Vec.create(-10 + ((i >= 3 ? (i - 3) : i) * 10), (i >= 3 ? 5 : -5)),
+                        rotation: 0
+                    })
+                ))(),
             ]
         },
+
         {
             // Junky-Yard
             idString: "junk_yard",
@@ -447,7 +504,7 @@ export const Buildings = ObjectDefinitions.create<BuildingDefinition>()(
             ],
             subBuildings: [
                 { // Fridges Or Toilets
-                    idString: { junk_yard_patch_fridges: 1,  junk_yard_patch_toilets: 1},
+                    idString: "junk_yard_patch_fridges_or_toilets",
                     position: Vec.create(-50, -60)
                 },
                 { // Stoves
@@ -459,7 +516,7 @@ export const Buildings = ObjectDefinitions.create<BuildingDefinition>()(
                     position: Vec.create(-58, 45)
                 },
                 { // Crates
-                    idString: "junk_yard_patch_crates",
+                    idString: { junk_yard_patch_tables: 1, junk_yard_patch_crates: 1 },
                     position: Vec.create(70, -35)
                 }
             ]
@@ -820,16 +877,6 @@ export const Buildings = ObjectDefinitions.create<BuildingDefinition>()(
                 RectangleHitbox.fromRect(33.50, 72, Vec.create(-32.75, 0)),
                 RectangleHitbox.fromRect(65.50, 29.50, Vec.create(16.75, -21.25))
             ),
-            puzzle: {
-                triggerInteractOn: "large_refinery_barrel",
-                interactDelay: 1000
-            },
-            sounds: {
-                solved: "generator_running",
-                position: Vec.create(0, 0),
-                maxRange: 500,
-                falloff: 2
-            },
             floorImages: [
                 {
                     key: "refinery_floor",
@@ -928,12 +975,10 @@ export const Buildings = ObjectDefinitions.create<BuildingDefinition>()(
                     idString: { barrel: 1, super_barrel: 1 },
                     position: Vec.create(-26, -30)
                 },
-                // {
-                //     idString: { barrel: 1, super_barrel: 1 },
-                //     position: Vec.create(-21.5, 4)
-                // },
-                // Detonator
-                { idString: "control_panel", position: Vec.create(-21.5, 2), rotation: 3, puzzlePiece: true },
+                {
+                    idString: { barrel: 1, super_barrel: 1 },
+                    position: Vec.create(-21.5, 4)
+                },
                 {
                     idString: "regular_crate",
                     position: Vec.create(28.75, -30)
