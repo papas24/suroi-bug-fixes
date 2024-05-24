@@ -46,6 +46,14 @@ export interface ObjectsNetData extends BaseObjectsNetData {
         })
         full?: {
             dead: boolean
+
+            // ------------------------------------
+            // Disguises: Hit Sounds & Particles
+            // ------------------------------------
+            hitSound: string
+            hitParticle: string
+            // -----------------------------------
+
             downed: boolean
             beingRevived: boolean
             teamID: number
@@ -189,6 +197,14 @@ export const ObjectSerializations: { [K in ObjectCategory]: ObjectSerialization<
         serializeFull(stream, data): void {
             const full = data.full;
             stream.writeBoolean(full.dead);
+
+            // -----------------------------------
+            // Disguises: Hit Sounds & Particles
+            // -----------------------------------
+            stream.writeUTF8String(full.hitSound);
+            stream.writeUTF8String(full.hitParticle);
+            // -----------------------------------
+
             stream.writeBoolean(full.downed);
             stream.writeBoolean(full.beingRevived);
             stream.writeUint8(full.teamID);
@@ -231,6 +247,14 @@ export const ObjectSerializations: { [K in ObjectCategory]: ObjectSerialization<
         deserializeFull(stream) {
             const data: ObjectsNetData[ObjectCategory.Player]["full"] = {
                 dead: stream.readBoolean(),
+
+                // ------------------------------------------
+                // Disguises: Hit Sounds & Particles.
+                // ------------------------------------------
+                hitSound: stream.readUTF8String(),
+                hitParticle: stream.readUTF8String(),
+                // ------------------------------------------
+
                 downed: stream.readBoolean(),
                 beingRevived: stream.readBoolean(),
                 teamID: stream.readUint8(),
