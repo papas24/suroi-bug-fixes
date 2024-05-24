@@ -1339,10 +1339,10 @@ export class Player extends BaseGameObject<ObjectCategory.Player> {
             // That way, we do not need to code stuff in the client.
             // ------------------------------------------------------------------------------------------------------------------
             let disguiseObstacle = this.game.map.generateObstacle(this.loadout.skin.obstacle, this.position);
-
-            this.game.grid.addObject(disguiseObstacle);
-            this.game.updateObjects = true;
-            disguiseObstacle.damage(disguiseObstacle.maxHealth, this);
+            disguiseObstacle.collidable = false; // We do not want collisions
+            this.game.addTimeout(() => {
+                disguiseObstacle.damage(disguiseObstacle.maxHealth, this);
+            }, 0.0001); // Very small delay so that the sound gets some time to play.
             // ------------------------------------------------------------------------------------------------------------------
 
         }
