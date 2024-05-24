@@ -22,7 +22,7 @@ import { Collision, Geometry, Numeric } from "../../../common/src/utils/math";
 import { type Timeout } from "../../../common/src/utils/misc";
 import { ItemType, type ExtendedWearerAttributes, type ReferenceTo, type ReifiableDef } from "../../../common/src/utils/objectDefinitions";
 import { type FullData } from "../../../common/src/utils/objectsSerializations";
-import { pickRandomInArray, randomBoolean } from "../../../common/src/utils/random";
+import { pickRandomInArray, randomBoolean } from "../../../common/src/utils/random"; // Added "randomBoolean" for disguises.
 import { SuroiBitStream } from "../../../common/src/utils/suroiBitStream";
 import { FloorTypes } from "../../../common/src/utils/terrain";
 import { Vec, type Vector } from "../../../common/src/utils/vector";
@@ -44,7 +44,7 @@ import { BaseGameObject, type GameObject } from "./gameObject";
 import { Loot } from "./loot";
 import { Obstacle } from "./obstacle";
 import { SyncedParticle } from "./syncedParticle";
-import { Obstacles } from "../../../common/src/definitions/obstacles";
+import { Obstacles } from "../../../common/src/definitions/obstacles"; // Needed for disguises.
 
 export interface PlayerContainer {
     readonly teamID?: string
@@ -783,8 +783,6 @@ export class Player extends BaseGameObject<ObjectCategory.Player> {
                     `${this.loadout.skin.obstacle}_particle`;
             }
 
-            console.log("PARTICLE: " + this.hitParticle);
-
         }
         else {
             this.hitSound = `player_hit_${randomBoolean() ? "1" : 2}`;
@@ -1198,7 +1196,7 @@ export class Player extends BaseGameObject<ObjectCategory.Player> {
         const newModifiers: this["modifiers"] = {
             maxHealth: 1,
             maxAdrenaline: 1,
-            baseSpeed: 1,
+            baseSpeed: 1.2, // changed because slow for some reason (Original value is 1)
             minAdrenaline: 0
         };
 
