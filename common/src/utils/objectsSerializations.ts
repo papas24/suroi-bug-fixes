@@ -46,13 +46,6 @@ export interface ObjectsNetData extends BaseObjectsNetData {
         })
         full?: {
             dead: boolean
-
-            // -----------------------------------------------------
-            // Disguises: Smoke Emitter.
-            // -----------------------------------------------------
-            spawnDisguiseSmokeEmitter: boolean
-            // -----------------------------------------------------
-
             downed: boolean
             beingRevived: boolean
             teamID: number
@@ -196,13 +189,6 @@ export const ObjectSerializations: { [K in ObjectCategory]: ObjectSerialization<
         serializeFull(stream, data): void {
             const full = data.full;
             stream.writeBoolean(full.dead);
-
-            // -----------------------------------------------------
-            // Disguises: Smoke Emitter.
-            // -----------------------------------------------------
-            stream.writeBoolean(full.spawnDisguiseSmokeEmitter);
-            // -----------------------------------------------------
-
             stream.writeBoolean(full.downed);
             stream.writeBoolean(full.beingRevived);
             stream.writeUint8(full.teamID);
@@ -245,13 +231,6 @@ export const ObjectSerializations: { [K in ObjectCategory]: ObjectSerialization<
         deserializeFull(stream) {
             const data: ObjectsNetData[ObjectCategory.Player]["full"] = {
                 dead: stream.readBoolean(),
-
-                // -----------------------------------------------------
-                // Disguises: Smoke Emitter.
-                // -----------------------------------------------------               
-                spawnDisguiseSmokeEmitter: stream.readBoolean(),
-                // -----------------------------------------------------
-
                 downed: stream.readBoolean(),
                 beingRevived: stream.readBoolean(),
                 teamID: stream.readUint8(),
