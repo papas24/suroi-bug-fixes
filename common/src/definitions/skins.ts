@@ -76,7 +76,6 @@ export const Skins = ObjectDefinitions.create<SkinDefinition>()(
         simple("disguise", ["flint_crate", "crate"], ["Orange Boxman"]),
         simple("disguise", ["aegis_crate", "crate"], ["Blue Boxman"]),
         simple("disguise", ["grenade_crate", "crate"], ["Boombox"]),
-        simple("disguise", ["flint_stone", "stone"], ["FLINT STONES"]),
         simple("disguise", ["barrel", "metal", true], ["Fish in a Barrel"]),
         simple("disguise", ["fridge", "appliance"], ["Indistructible"]),
         simple("disguise", ["pine_tree", "tree"], ["The Lorax"]),
